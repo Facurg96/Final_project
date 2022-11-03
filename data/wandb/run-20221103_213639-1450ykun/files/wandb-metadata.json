@@ -1,0 +1,58 @@
+{
+    "os": "Linux-5.4.0-1072-aws-x86_64-with-Ubuntu-18.04-bionic",
+    "python": "3.6.9",
+    "heartbeatAt": "2022-11-03T21:36:40.125697",
+    "startedAt": "2022-11-03T21:36:39.724420",
+    "docker": null,
+    "cuda": "11.0.228",
+    "args": null,
+    "state": "running",
+    "program": "<python with no main file>",
+    "host": "ip-172-31-29-56",
+    "username": "facurg96",
+    "executable": "/usr/bin/python3",
+    "cpu_count": 2,
+    "cpu_count_logical": 4,
+    "cpu_freq": {
+        "current": 2700.1697500000005,
+        "min": 1200.0,
+        "max": 3000.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2699.911,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2700.887,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2699.869,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2700.012,
+            "min": 1200.0,
+            "max": 3000.0
+        }
+    ],
+    "disk": {
+        "total": 290.7605400085449,
+        "used": 260.1454429626465
+    },
+    "gpu": "Tesla K80",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "Tesla K80",
+            "memory_total": 11997020160
+        }
+    ],
+    "memory": {
+        "total": 59.858646392822266
+    }
+}

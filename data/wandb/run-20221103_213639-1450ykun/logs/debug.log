@@ -1,0 +1,54 @@
+2022-11-03 21:36:39,728 INFO    MainThread:26771 [wandb_setup.py:_flush():68] Configure stats pid to 26771
+2022-11-03 21:36:39,728 INFO    MainThread:26771 [wandb_setup.py:_flush():68] Loading settings from /home/facurg96/.config/wandb/settings
+2022-11-03 21:36:39,729 INFO    MainThread:26771 [wandb_setup.py:_flush():68] Loading settings from /home/facurg96/Final_Project/data/wandb/settings
+2022-11-03 21:36:39,729 INFO    MainThread:26771 [wandb_setup.py:_flush():68] Loading settings from environment variables: {'_require_service': 'True'}
+2022-11-03 21:36:39,729 INFO    MainThread:26771 [wandb_setup.py:_flush():68] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2022-11-03 21:36:39,729 INFO    MainThread:26771 [wandb_init.py:_log_setup():476] Logging user logs to /home/facurg96/Final_Project/data/wandb/run-20221103_213639-1450ykun/logs/debug.log
+2022-11-03 21:36:39,729 INFO    MainThread:26771 [wandb_init.py:_log_setup():477] Logging internal logs to /home/facurg96/Final_Project/data/wandb/run-20221103_213639-1450ykun/logs/debug-internal.log
+2022-11-03 21:36:39,730 INFO    MainThread:26771 [wandb_init.py:_jupyter_setup():426] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x7fceffe60a58>
+2022-11-03 21:36:39,731 INFO    MainThread:26771 [wandb_init.py:init():516] calling init triggers
+2022-11-03 21:36:39,731 INFO    MainThread:26771 [wandb_init.py:init():520] wandb.init called with sweep_config: {}
+config: {}
+2022-11-03 21:36:39,731 INFO    MainThread:26771 [wandb_init.py:init():569] starting backend
+2022-11-03 21:36:39,731 INFO    MainThread:26771 [wandb_init.py:init():573] setting up manager
+2022-11-03 21:36:39,741 INFO    MainThread:26771 [backend.py:_multiprocessing_setup():104] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2022-11-03 21:36:39,742 INFO    MainThread:26771 [wandb_init.py:init():580] backend started and connected
+2022-11-03 21:36:39,765 INFO    MainThread:26771 [wandb_run.py:_label_probe_notebook():1113] probe notebook
+2022-11-03 21:36:39,765 INFO    MainThread:26771 [wandb_run.py:_label_probe_notebook():1123] Unable to probe notebook: 'NoneType' object has no attribute 'get'
+2022-11-03 21:36:39,766 INFO    MainThread:26771 [wandb_init.py:init():658] updated telemetry
+2022-11-03 21:36:39,769 INFO    MainThread:26771 [wandb_init.py:init():694] communicating run to backend with 60 second timeout
+2022-11-03 21:36:40,009 INFO    MainThread:26771 [wandb_run.py:_on_init():2000] communicating current version
+2022-11-03 21:36:40,089 INFO    MainThread:26771 [wandb_run.py:_on_init():2004] got version response 
+2022-11-03 21:36:40,089 INFO    MainThread:26771 [wandb_init.py:init():728] starting run threads in backend
+2022-11-03 21:36:40,323 INFO    MainThread:26771 [wandb_run.py:_console_start():1980] atexit reg
+2022-11-03 21:36:40,324 INFO    MainThread:26771 [wandb_run.py:_redirect():1838] redirect: SettingsConsole.WRAP_RAW
+2022-11-03 21:36:40,326 INFO    MainThread:26771 [wandb_run.py:_redirect():1903] Wrapping output streams.
+2022-11-03 21:36:40,326 INFO    MainThread:26771 [wandb_run.py:_redirect():1925] Redirects installed.
+2022-11-03 21:36:40,327 INFO    MainThread:26771 [wandb_init.py:init():765] run started, returning control to user process
+2022-11-03 21:37:46,777 INFO    MainThread:26771 [wandb_init.py:_pause_backend():389] pausing backend
+2022-11-03 21:37:46,778 INFO    MainThread:26771 [jupyter.py:save_ipynb():378] not saving jupyter notebook
+2022-11-03 21:42:02,851 INFO    MainThread:26771 [wandb_init.py:_resume_backend():398] resuming backend
+2022-11-03 21:42:02,856 INFO    MainThread:26771 [wandb_init.py:_pause_backend():389] pausing backend
+2022-11-03 21:42:02,856 INFO    MainThread:26771 [jupyter.py:save_ipynb():378] not saving jupyter notebook
+2022-11-03 21:42:11,883 INFO    MainThread:26771 [wandb_init.py:_resume_backend():398] resuming backend
+2022-11-03 21:42:11,913 INFO    MainThread:26771 [wandb_setup.py:_flush():68] Configure stats pid to 26771
+2022-11-03 21:42:11,913 INFO    MainThread:26771 [wandb_setup.py:_flush():68] Loading settings from /home/facurg96/.config/wandb/settings
+2022-11-03 21:42:11,913 INFO    MainThread:26771 [wandb_setup.py:_flush():68] Loading settings from /home/facurg96/Final_Project/data/wandb/settings
+2022-11-03 21:42:11,913 INFO    MainThread:26771 [wandb_setup.py:_flush():68] Loading settings from environment variables: {'_require_service': 'True'}
+2022-11-03 21:42:11,913 INFO    MainThread:26771 [wandb_setup.py:_flush():68] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2022-11-03 21:42:11,914 INFO    MainThread:26771 [wandb_init.py:_log_setup():476] Logging user logs to /home/facurg96/Final_Project/data/wandb/run-20221103_214211-3uxbxvyg/logs/debug.log
+2022-11-03 21:42:11,914 INFO    MainThread:26771 [wandb_init.py:_log_setup():477] Logging internal logs to /home/facurg96/Final_Project/data/wandb/run-20221103_214211-3uxbxvyg/logs/debug-internal.log
+2022-11-03 21:42:11,914 INFO    MainThread:26771 [wandb_init.py:init():516] calling init triggers
+2022-11-03 21:42:11,914 INFO    MainThread:26771 [wandb_init.py:init():520] wandb.init called with sweep_config: {}
+config: {}
+2022-11-03 21:42:11,914 INFO    MainThread:26771 [wandb_init.py:init():536] re-initializing run, found existing run on stack: 1450ykun
+2022-11-03 21:42:11,916 INFO    MainThread:26771 [wandb_run.py:_finish():1746] finishing run facurg96/my-test-project/1450ykun
+2022-11-03 21:42:11,916 INFO    MainThread:26771 [jupyter.py:save_history():448] not saving jupyter history
+2022-11-03 21:42:11,917 INFO    MainThread:26771 [jupyter.py:save_ipynb():378] not saving jupyter notebook
+2022-11-03 21:42:11,917 INFO    MainThread:26771 [wandb_init.py:_jupyter_teardown():408] cleaning up jupyter logic
+2022-11-03 21:42:11,917 INFO    MainThread:26771 [wandb_run.py:_atexit_cleanup():1949] got exitcode: 0
+2022-11-03 21:42:11,917 INFO    MainThread:26771 [wandb_run.py:_restore():1932] restore
+2022-11-03 21:42:11,917 INFO    MainThread:26771 [wandb_run.py:_restore():1938] restore done
+2022-11-03 21:42:14,079 INFO    MainThread:26771 [wandb_run.py:_footer_history_summary_info():3377] rendering history
+2022-11-03 21:42:14,079 INFO    MainThread:26771 [wandb_run.py:_footer_history_summary_info():3409] rendering summary
+2022-11-03 21:42:14,082 INFO    MainThread:26771 [wandb_run.py:_footer_sync_info():3333] logging synced files
