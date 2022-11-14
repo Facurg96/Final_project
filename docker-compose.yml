@@ -4,7 +4,7 @@ services:
     image: fast_api
     container_name: ml_api
     build:
-      context: ./api
+      context: ./app
       target: build
     ports:
       - "80:5000"
