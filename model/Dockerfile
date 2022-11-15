@@ -13,4 +13,7 @@ WORKDIR /src
 
 FROM base as build
 ENTRYPOINT ["python3", "/src/ml_service.py"]
-
+RUN python -m spacy download en_core_web_sm
+RUN python -m nltk.downloader punkt
+RUN python -m nltk.downloader wordnet
+RUN python3 -m nltk.downloader stopwords

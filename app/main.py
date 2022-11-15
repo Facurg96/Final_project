@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from fastapi import FastAPI, Form, Depends
 from starlette.responses import HTMLResponse
 from middleware import model_predict
+import pandas as pd
 app = FastAPI()
 
 
@@ -38,7 +39,7 @@ class SimpleModel:
 @app.post("/form")
 def form_post(form_data: SimpleModel = Depends()):
     data = form_data
-    a=dict({'name':data.name,'description':data.description})
+    a={'name':data.name,'description':data.description}
     prediction=model_predict(a)
     print(prediction)
 

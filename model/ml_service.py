@@ -1,7 +1,7 @@
 import json
 import os
 import time
-
+import pandas as pd
 import numpy as np
 import redis
 import settings
@@ -47,9 +47,12 @@ def predict(dictionary):
         score as a number.
     """
     label = None
-    new_dict=preprocess(dictionary)
+    new_dict=preprocess(pd.DataFrame([dictionary]))
     category=model.predict(new_dict)
-    label = decoder(category)
+    try:
+        label = decoder(np.array(category, dtype=int).reshape(-1, 1))
+    except ValueError:
+        label = 'other'
   
     return label
 

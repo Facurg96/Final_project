@@ -1,6 +1,11 @@
 Pillow==9.0.1
 pytest==7.1.1
 redis==4.1.4
-
+gensim
 protobuf==3.20.0
 scikit-learn
+NumPy
+nltk
+spacy
+bs4
+pandas
