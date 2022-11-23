@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', path='./img/favicon.ico') }}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+    <title>Automated E-commerce classificator</title>
+    <link href="{{ url_for('static', path='css/style.css') }}" rel="stylesheet">
+ 
+</head>
+
+<body> 
+    <div class="container">
+    <header>
+        <div class="logo">
+           
+            <img src="{{ url_for('static', path='./img/anyonelogo.svg') }}" alt="" width="60" height="60">
+        </div>
+        <div class="titulo">
+            <h1 id=title>E-commerce Classificator</h1>
+            <h1 id=title2>AI Classificator</h1>
+        </div>
+        <div class="links">
+            <nav>
+                <a id="index" href="./index.html">HOME</a>
+                <a id="sell" href="./sell.html">SELL</a>
+                <a href="./categories.html">CATEGORIES</a>
+                <a href="./contact.html">CONTACT</a>
+            </nav>
+        </div>
+        <div class="menu">
+            <div class="menu-btn" id="menu">
+                <div class="menu-btn_burguer">
+                </div>
+            </div>
+        </div>
+        <!-- <div class="menu">
+            <div class="dropdown">                
+            <span class="material-icons-round" class="dropbtn" id="menu-icono">menu</span>
+            <span class="material-icons-round">close</span>
+            <div class="dropdown-content">
+                <a href="./index.html">Home</a>
+                <a href="./order.html">Order</a>
+                <a href="./contact-us.html">Contact Us</a>
+                <a href="./log-in.html">Log In</a>
+            </div> -->
+        </div>
+        
+        
+    </header>
+
+    <main id="fixed-height1">
+        <form class="form" action="/analyze/" method="post" enctype="multipart/form-data">
+            <label for="product_name">Product name:</label><br>
+            <input type="text", name="product_name"><br>
+            <label for="product_description">Product description:</label><br>
+            <input type="text", name="product_description"><br>
+            <label for="price">Price:</label><br>
+            <input type="number", name="price"><br>
+            <label for="product_image">Product image:</label><br>
+            <input type="file", name="product_image"><br>
+            <input type="submit", value="Predict">            
+        </form>      
+    </div>
+    </main>
+    <footer id="fixed-height2">
+        <p>Anyone AI Team 7 - All rights reserved © 2022</p>
+    </footer>
+</div>
+</body>
+<script src="{{ url_for('static', path='/JS/main.js') }}"></script> 
+
+</html>
