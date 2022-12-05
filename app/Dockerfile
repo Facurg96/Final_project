@@ -14,3 +14,4 @@ FROM base as test
 
 FROM base as build
 ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
+# ENTRYPOINT ["python", "main.py"]
