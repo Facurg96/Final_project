@@ -1,3 +1,4 @@
+
 import json
 import os
 import time
@@ -6,12 +7,13 @@ import numpy as np
 import redis
 import settings
 import pickle
+#import model
+from bert_model import *
 
-
-
-pipeline=pickle.load(open(r'pipeline_name.pkl','rb'))
-model = pickle.load(open(r'KNN_model.pkl','rb'))
-category_encoder= pickle.load(open(r'encoder.pkl','rb'))
+pre = "./experiments/preprocessing/text_pipeline.sav"
+modelo = "./experiments/trained_models/bert_tuned"
+cats = "./experiments/categories_encoded.json"
+model = BertPredict(pre,cats,modelo)
 
 db = redis.Redis(
     host=settings.REDIS_IP, 
@@ -20,17 +22,7 @@ db = redis.Redis(
 )
 
 
-
-
-def preprocess(dictionary):
-    new_dict=pipeline.transform(dictionary)
-    return new_dict
-
-def decoder(category):
-    label=category_encoder.inverse_transform(category)
-    return label
-
-def predict(dictionary):
+def predict(query_dict):
     """
     Load image from the corresponding folder based on the image name
     received, then, run our ML model to get predictions.
@@ -46,15 +38,14 @@ def predict(dictionary):
         Model predicted class as a string and the corresponding confidence
         score as a number.
     """
-    label = None
-    new_dict=preprocess(pd.DataFrame([dictionary]))
-    category=model.predict(new_dict)
-    try:
-        label = decoder(np.array(category, dtype=int).reshape(-1, 1))
-    except ValueError:
-        label = 'other'
-  
-    return label
+    preds = model(**query_dict)
+
+    # So we access to the class name and the predicted probability with the following lines:
+    class_name = preds[0]
+    pred_probability = preds[1]
+
+    return class_name, round(pred_probability,4)
+    
 
 def classify_process():
     """
@@ -82,19 +73,28 @@ def classify_process():
         # Hint: You should be able to successfully implement the communication
         #       code with Redis making use of functions `brpop()` and `set()`.
         # TODO
-        msg = db.brpop(settings.REDIS_QUEUE)[1]
-        msg = json.loads(msg.decode("utf-8"))
-        name = msg["dict"]
-        
-        pred = str(predict(name))
-        result = json.dumps(dict({
-            "prediction": pred
-        }))
-        db.set(msg["id"], result)
-        
+        # 1. Taking a new job from Redis
+        queue_name, msg = db.brpop(settings.REDIS_QUEUE)
+        msg = json.loads(msg) #converts the json object to a python dictionary
+        job_id = msg["id"]
+        query_dict = msg["query_dict"]
+
+        # 2. Running the ML model on the given data:
+        class_name, probability = predict(query_dict)
+
+        # 3. Storing as a Python dictionary:
+        results = {
+            "prediction":class_name,
+            "score":float(probability),
+        }
+
+        # 4. Storing the results on Redis Hash Table:
+        db.set(job_id, json.dumps(results))
         # Don't forget to sleep for a bit at the end
         time.sleep(settings.SERVER_SLEEP)
-        
+
+
+      
 
 if __name__ == "__main__":
     # Now launch process
