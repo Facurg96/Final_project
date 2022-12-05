@@ -15,7 +15,7 @@ db = redis.Redis(
 )
 
 
-def model_predict(dictionary):
+def model_predict(query_dict):
     
     prediction = None
     
@@ -35,7 +35,7 @@ def model_predict(dictionary):
     # TODO DONE
     job_data = dict({
         "id": job_id,
-        "dict": dictionary
+        "query_dict":query_dict
     })
 
     # Send the job to the model service using Redis
@@ -51,11 +51,12 @@ def model_predict(dictionary):
         # Attempt to get model predictions using job_id
         # Hint: Investigate how can we get a value using a key from Redis
         # TODO DONE
+        print("esperando", job_id)
         output = db.get(job_id)
         #a = json.loads(a.decode("utf-8"))
         if output:
-            results = json.loads(output.decode("utf-8"))
-            prediction = results
+            output = json.loads(output.decode("utf-8"))
+           
             
 
         # Don't forget to delete the job from Redis after we get the results!
@@ -65,6 +66,8 @@ def model_predict(dictionary):
             break
         # Sleep some time waiting for model results
         time.sleep(settings.API_SLEEP)
+    prediction = output["prediction"]
+    score = output["score"]
 
-    return prediction
+    return prediction, score
     

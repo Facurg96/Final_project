@@ -7,4 +7,4 @@ NumPy >= 1.6.1
 jinja2==3.0.3
 python-multipart
 pandas
-aiofiles
+aiofiles==0.8.0
