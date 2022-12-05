@@ -10,14 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
     <title>Automated E-commerce classificator</title>
     <link href="{{ url_for('static', path='css/style.css') }}" rel="stylesheet">
- 
 </head>
 
 <body> 
-    <header>
+    <header style="z-index:1 ; opacity: 1; background-color: #182B56;">
         <div class="logo">
            
-            <img src="{{ url_for('static', path='./img/anyonelogo.svg') }}" alt="" width="60" height="60">
+            <img src="{{ url_for('static', path='./img/anyonelogo.svg') }}" alt="" width="160" height="40">
         </div>
         <div class="titulo">
             <h1 id=title>E-commerce Classificator</h1>
@@ -25,10 +24,10 @@
         </div>
         <div class="links">
             <nav>
-                <a id="index" href="./index.html">HOME</a>
-                <a id="sell" href="./sell.html">SELL</a>
-                <a href="./categories.html">CATEGORIES</a>
-                <a href="./contact.html">CONTACT</a>
+                <a id="index" href="../">HOME</a>
+                <a id="sell" href="../sell/">SELL</a>
+                <a href="../categories/">CATEGORIES</a>
+                <a href="../contact/">CONTACT</a>
             </nav>
         </div>
         <div class="menu">
@@ -37,44 +36,307 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="menu">
-            <div class="dropdown">                
-            <span class="material-icons-round" class="dropbtn" id="menu-icono">menu</span>
-            <span class="material-icons-round">close</span>
-            <div class="dropdown-content">
-                <a href="./index.html">Home</a>
-                <a href="./order.html">Order</a>
-                <a href="./contact-us.html">Contact Us</a>
-                <a href="./log-in.html">Log In</a>
-            </div> -->
-        </div>
+
         
         
     </header>
 
-    <main id="fixed-height1">
-        <div>
-            <p id="predictionresponse">
-                Product name: {{product.product_name}}<br><br>
-                Product price: {{product.price}}<br><br>
-                Product image: {{product.product_image}}<br><br>
-                <img src="{{image_path}}" width="250" height="250"><br><br>   
-                Prediction: {{prediction}}</p> 
-        </div>  
-          
-        <form id="form" method="POST" action="/feedback">
-            <label for="new_class">Correct category:</label><br>
-            <input type="text", name="new_class"><br>
+    <main id="fixed-height1" style="height: 1000px">
+        <div id="contact2">
             
-            <button type="submit">Report incorrect answer</button>
-            <input name="report" style="visibility: hidden;" value="{'product_name': '{{ product.product_name }}', 'product_description': '{{ product.product_description }}', 'prediction': {{ prediction }}, 'new_class': {{ new_class }}  }"/>        
-        </form>
-    </div>
+                
+                <p class="text-justify" id="product_title">Product: {{product.product_name}}</p>
+                <div class="row">
+                <div class="col-6 ">
+                    
+                    <img src="{{image_path}}" width="250" height="250">
+                    
+                </div>
+                <div class="col-6 ">
+                    <div class="alert alert-light" role="alert">
+                      <p class="text-justify" id="product_body">Price: {{product.price}}</p>
+                    </div>
+                    <div class="alert alert-light" role="alert">
+                      <p class="text-justify" id="product_body">Description: {{product.product_description}}</p>
+                    </div>
+                    <div class="alert alert-light" role="alert">
+                      <p class="text-justify" id="product_body">Score: {{score}}</p>
+                    </div>
+                    <form action="/save" method="POST" id="save">
+                        <input name="product_name" style="visibility: hidden;" value="{{product.product_name}}"/>
+                        <input name="product_description" style="visibility: hidden;" value="{{product.product_description}}"/><br>
+                        <button type="submit" style="background-color:#182B56"><img src="/static/contact/save.png" width="40" height="40"></button>
+                        <input name="prediction" style="visibility: hidden;" value="{{prediction}}"/>
+                        <input name="price" style="visibility: hidden;" value="{{product.price}}"/>                       
+                    </form>
+                    
+                    <form id="form" autocomplete="off" method="POST" action="/feedback">
+                        <input name="product_name" style="visibility: hidden;" value="{{product.product_name}}"/>
+                        <input name="product_description" style="visibility: hidden;" value="{{product.product_description}}"/><br>
+                        <div class="alert alert-light" role="alert">
+                          New Category: <div class="autocomplete" style="width:300px;">
+                            <input id="myInput" type="text" name="new_class" placeholder="Type your category">
+                        </div>
+                            
+                          </div>   
+                        <div class="alert alert-light" role="alert">
+                        <button type="submit">Report incorrect answer</button><br>
+                        </div>
+                        <input name="prediction" style="visibility: hidden;" value="{{prediction}}"/>
+                        <input name="price" style="visibility: hidden;" value="{{product.price}}"/>
+                        
+                    </form>
+                
+                </div>
+
+        </div>     
+    
     </main>
     <footer id="fixed-height2">
         <p>Anyone AI Team 7 - All rights reserved © 2022</p>
     </footer>
 
-</body>
-<script src="{{ url_for('static', path='/JS/main.js') }}"></script> 
+
+
+<script >
+    function autocomplete(inp, arr) {
+      /*the autocomplete function takes two arguments,
+      the text field element and an array of possible autocompleted values:*/
+      var currentFocus;
+      /*execute a function when someone writes in the text field:*/
+      inp.addEventListener("input", function(e) {
+          var a, b, i, val = this.value;
+          /*close any already open lists of autocompleted values*/
+          closeAllLists();
+          if (!val) { return false;}
+          currentFocus = -1;
+          /*create a DIV element that will contain the items (values):*/
+          a = document.createElement("DIV");
+          a.setAttribute("id", this.id + "autocomplete-list");
+          a.setAttribute("class", "autocomplete-items");
+          /*append the DIV element as a child of the autocomplete container:*/
+          this.parentNode.appendChild(a);
+          /*for each item in the array...*/
+          for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+              /*create a DIV element for each matching element:*/
+              b = document.createElement("DIV");
+              /*make the matching letters bold:*/
+              b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+              b.innerHTML += arr[i].substr(val.length);
+              /*insert a input field that will hold the current array item's value:*/
+              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+              /*execute a function when someone clicks on the item value (DIV element):*/
+              b.addEventListener("click", function(e) {
+                  /*insert the value for the autocomplete text field:*/
+                  inp.value = this.getElementsByTagName("input")[0].value;
+                  /*close the list of autocompleted values,
+                  (or any other open lists of autocompleted values:*/
+                  closeAllLists();
+              });
+              a.appendChild(b);
+            }
+          }
+      });
+      /*execute a function presses a key on the keyboard:*/
+      inp.addEventListener("keydown", function(e) {
+          var x = document.getElementById(this.id + "autocomplete-list");
+          if (x) x = x.getElementsByTagName("div");
+          if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+              /*and simulate a click on the "active" item:*/
+              if (x) x[currentFocus].click();
+            }
+          }
+      });
+      function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+      }
+      function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+          x[i].classList.remove("autocomplete-active");
+        }
+      }
+      function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+          if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+          }
+        }
+      }
+      /*execute a function when someone clicks in the document:*/
+      document.addEventListener("click", function (e) {
+          closeAllLists(e.target);
+      });
+    }
+    
+    /*An array containing all the Categories names in the world:*/
+var categories =
+['Alkaline Batteries', 'Specialty Batteries',
+'Dash Installation Kits', 'Deck Harnesses', 'Antennas & Adapters',
+'Cordless Phone Batteries', 'Car Subwoofers',
+'Sound Recording Software', 'Music Memorabilia',
+'Keyboard Accessories', 'More Pop Culture Merchandise',
+'Audio Interfaces', 'Microphones', 'DJ Equipment Accessories',
+'Recording & Music Stands', 'Sheet Music', 'Wii Games',
+'DSLR Body & Lens', 'Xbox 360 Games', 'Action Camcorder Mounts',
+'DJ Lighting & Effects', 'Battery Backup (UPS)', 'Pre-Owned Games',
+'Powersports Audio', 'Monitor & Video Cables', 'Cooktops',
+'All Headphones', 'Coffee Pods', 'Single-Serve Blenders',
+'Upright Freezers', 'Projector Screens', 'Power Supplies',
+'Hair Dryers', 'Over-Ear Headphones', 'Accessories',
+'Nintendo DS Games', 'PCI Express Graphics Cards', 'PS3 Games',
+'TV Mounts', 'Condenser', 'Prime Lenses',
+'Laptop Chargers & Adapters', 'Window Air Conditioners',
+'Hair Straighteners', 'Multi-Cup Coffee Makers',
+'Cell Phone Cases & Clips', 'iPhone Cases & Clips',
+'Portable Chargers/Power Packs', 'Polarizing Filters', 'Irons',
+'Printer Ink', 'All Flat-Panel TVs', 'Computer Speakers',
+'Cases, Covers & Keyboard Folios', 'iPhone 6 Cases',
+'Electric Griddles & Hotplates', 'Corded Telephones',
+'Wireless & Multiroom Components', 'All Memory Cards',
+'All Refrigerators', 'Composite Video Cables',
+'Instrument Instructional Books', 'Interfaces & Converters',
+'More Car Accessories', 'Universal Remote Controls',
+'All Microwaves', 'Electric Dryers', 'Gas Dryers', 'Toaster Ovens',
+'Blood Pressure Monitors', 'Bluetooth & Wireless Speakers',
+'All Monitors', 'Handheld & Stick Vacuums', 'Camera Batteries',
+'3D Printer Filament', 'Screen Protectors',
+'Commercial & Garage Vacuums', 'Heaters', 'Ice Makers',
+'Humidifiers', 'Coffee Pod Racks & Storage',
+'Food Preparation Utensils', 'PC Games',
+'Single-Serve Coffee Makers', 'Toasters',
+'Replacement Parts & Accessories',
+'Slow Cookers, Crock Pots & Roaster Ovens', 'Deep Fryers',
+'Rice Cookers', 'Waffle Makers', 'Gas Grills', 'Cookware',
+'Grill Accessories', 'Trimmers', 'Curling Irons', 'All TV Stands',
+'Front-Loading Washers', 'Adapters, Cables & Chargers',
+'Microphone Accessories', 'Electric Espresso Machines',
+'Double Ovens', 'Scales', 'Wired & USB Keyboards',
+'Top-Freezer Refrigerators', 'All Tablets', 'In-Dash with DVD',
+'All Unlocked Cell Phones', 'Speaker Wall Mounts',
+'All No-Contract Phones', 'Lens Caps', 'Activity Tracker Bands',
+'Receivers', 'Gas Ranges', 'Toner', 'Built-In Dishwashers',
+'Earbud & In-Ear Headphones', 'Filters & Accessories',
+'Wireless Headphones', 'Systems', 'Internal Hard Drives',
+'Power Amps', 'Wall Chargers & Power Adapters', 'Stylus Pens',
+'Fitness & GPS Watches', 'Floor Speakers',
+'Center-Channel Speakers', 'Electric Ranges', 'Projectors',
+'Food Processors', 'Hand Blenders', 'Stand Mixers',
+'Air Purifiers', 'Universal Camera Bags & Cases',
+'Mouse & Wrist Pads', 'All Car Stereo Receivers', 'Smartwatches',
+'Wireless & Bluetooth Mice', 'Gaming Headsets',
+'Ethernet Hubs & Switches', 'Air Purifier Filters & Parts',
+'Electric Guitars', 'Sound Bars', 'Smart Light Bulbs',
+'All Point & Shoot Cameras', 'All Mirrorless Cameras', 'PS4 Games',
+'Cutlery', 'Electric Tea Kettles', 'Hand Mixers',
+'Wall Mount Range Hoods', 'Rechargeable Batteries',
+'Refrigerator Water Filters', 'Laptop Batteries',
+'Remote Controls', 'Long-Range Zoom Lenses', 'Mirrorless Lenses',
+'Vacuum & Floor Tools', 'Xbox One Games', 'Electric Fireplaces',
+'PC Range Extenders', 'Internal Batteries', "Men's Shavers",
+'Hewlett-Packard', 'Table & Portable Fans', 'Cases',
+'Portable Air Conditioners', 'Outdoor Speakers',
+'Speaker Cables & Wire', 'In-Wall Speakers',
+'In-Wall Speaker Accessories', 'Home Theater Networking',
+'In-Ceiling Speakers', 'HDMI Cables', 'Bookshelf Speakers',
+'Acoustic Guitars', 'Shredders', 'Microwave Trim Kits',
+'Chest Freezers', 'Side-by-Side Refrigerators',
+'Sheet Music & DVDs', 'Clocks', 'Subwoofer Speakers',
+'Nintendo 3DS Games', 'TV Stands', 'Cell Phone Batteries & Power',
+'Language Learning Software', 'Instant Print Cameras',
+'Car Chargers', 'Popcorn Makers', 'Toys to Life',
+'Activity Trackers & Pedometers', 'Media Cabinets',
+'USB Flash Drives', 'Baby Monitors', 'Tower & Pedestal Fans',
+'Cleaning Solutions', 'USB Cables & Hubs',
+'All Cell Phones with Plans', 'Musical Instrument Cables',
+'Portable GPS', 'Security Camera Systems', 'Laptop Bags & Cases',
+'Car Electronics Professional Installation',
+'Camcorder Batteries & Power', '6.5" Car Speakers',
+'Wireless Routers', 'Binoculars', 'Safes', 'Spotting Scopes',
+'Amplifiers', 'Charcoal Grills', 'On-Ear Headphones',
+'Short-Range Zoom Lenses', 'Surge Protectors', 'TV Antennas',
+'LED Monitors', 'Camera Backpacks', 'Security Cameras',
+'CD/DVD Duplicators', 'Xbox One Controllers',
+'Science & Discovery', 'Tripods & Monopods', 'Tripods',
+'Speaker Cables', '3D Printers & Filament', 'Chromebooks',
+'Pressure Cookers', 'Electric Toothbrushes',
+'Car Lights & Lighting Accessories', 'Full-Size Blenders',
+'DSLR Flashes', 'Flash Accessories', 'Top-Loading Washers',
+'Stereo Shelf Systems', 'MP3 Player Cables', 'A/V Switchers',
+'Xbox One Headsets', 'Bakeware', 'Vacuum Filters', 'Wii U Games',
+'Studio Headphones', 'Home Office Desks', 'Prepaid Minutes',
+'All Desktops', 'External Hard Drives', 'Water Bottles',
+'Robot Vacuums', 'Refurbished Laptops', 'Telescopes',
+'Car Security & Remote Start Accessories', 'Desktop Memory',
+'Upright Vacuums', 'Solid State Drives',
+'French Door Refrigerators', 'Acoustical Treatments', 'Wall Art',
+'Loaded Enclosures', 'Subwoofer Enclosures', 'Specialty Lenses',
+'Camera Straps', 'Specialty Gift Cards', 'Camera Mounts',
+'Office Chairs', 'Computer Headsets', 'Single Ovens',
+'iPhone 6 Plus Cases', 'iPhone Accessories', 'Guitar Stands',
+'All-In-One Printers', 'Hard Drives & Storage', 'iPad',
+'Best Buy Gift Cards', 'Turntables & Accessories',
+'Portable Keyboards', 'Ottomans', 'Data Cables',
+'Compact Refrigerators', 'Black & White Laser Printers',
+'Digital Camera Accessories', 'Wine Refrigerators & Coolers',
+'Dehumidifiers', 'PC Laptops', 'Musical Instruments',
+'Photo-Quality Paper', 'Desks',
+'Bluetooth & Wireless Speaker Accessories', 'Keyboards',
+'File Cabinets & Storage', 'Camera Chargers & Adapters',
+'Cell Phone Mounts', 'All-In-One Inkjet Printers',
+'iPhone Screen Protectors', 'Signal Boosters',
+'Coffee & Travel Mugs', '4K Ultra HD TVs',
+'All Camera Accessories', 'Live Sound Accessories',
+'Smartwatch Bands', 'Guitar Strings', 'Radios',
+'Fiber Optic Cables', 'Magnolia TV Stands, Mounts & Furniture',
+'Luggage', 'Home Theater Seating', 'Smart Door Locks', 'Fire Pits',
+'Outdoor Fireplaces', 'Live Sound Speaker Systems', 'Pedals',
+'Selfie-Sticks', 'Car Audio Installation Parts', 'MP Exclusives',
+'Multi-Channel Amps', 'Disney Infinity', 'Casino Games & Machines',
+'Ballistic', 'Appliance & Outlet Control', 'Living Room Furniture',
+'Mono Subwoofer Amps', 'Outdoor Dining Sets', 'Outdoor Chairs',
+'Outdoor Sofas', 'Headphones', 'Acoustic Drums & Sets',
+'Action Camcorder Accessories', 'Fireplace Accessories',
+'Camera Bags & Cases', 'Apple Watch Bands & Straps',
+'Apple Watch Cases', 'Virtual Reality-Ready Computers',
+'Drink & Soda Mixes', 'Skylanders', 'iPad & Tablet Accessories',
+'Amiibo', 'Network Cables', 'Musical Instrument Accessories',
+'Drone Parts', 'iPhone', 'Refurbished Phones', 'Outdoor Lighting',
+'Bar Stools', 'Pub Tables', 'Dart Board Cabinets',
+'iPhone 6s Plus Cases', 'iPhone 6s Cases', 'Outdoor Heating',
+'Skylight & UV Filters', 'Ceiling Fans', 'Pool Balls & Racks',
+'Neutral Density Filters', 'Outdoor Furniture Sets']
+
+/*initiate the autocomplete function on the "myInput" element, and pass along the categories array as possible autocomplete values:*/
+autocomplete(document.getElementById("myInput"), categories);
+</script>
+
+</body> 
 </html>

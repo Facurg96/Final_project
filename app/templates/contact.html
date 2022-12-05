@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', path='./img/favicon.ico') }}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+    <title>Automated E-commerce classificator</title>
+    <link href="{{ url_for('static', path='css/style.css') }}" rel="stylesheet">
+</head>
+
+<body> 
+    <header>
+        <div class="logo">
+           
+            <img src="{{ url_for('static', path='./img/anyonelogo.svg') }}" alt="" width="160" height="40">
+        </div>
+        <div class="titulo">
+            <h1 id=title>Contact to the team</h1>
+            <h1 id=title2>Contact</h1>
+        </div>
+        <div class="links">
+            <nav>
+                <a id="index" href="../">HOME</a>
+                <a id="sell" href="../sell/">SELL</a>
+                <a href="../categories/">CATEGORIES</a>
+                <a href="../contact/">CONTACT</a>
+            </nav>
+        </div>
+        <div class="menu">
+            <div class="menu-btn" id="menu">
+                <div class="menu-btn_burguer">
+                </div>
+            </div>
+        </div>
+        <!-- <div class="menu">
+            <div class="dropdown">                
+            <span class="material-icons-round" class="dropbtn" id="menu-icono">menu</span>
+            <span class="material-icons-round">close</span>
+            <div class="dropdown-content">
+                <a href="./index.html">Home</a>
+                <a href="./order.html">Order</a>
+                <a href="./contact-us.html">Contact Us</a>
+                <a href="./log-in.html">Log In</a>
+            </div> -->
+        </div>
+        
+        
+    </header>
+
+    <main id="contact">  
+
+        <div id="contact2">
+            <br><br>
+            <br><br>
+            <!--
+            <img src="/static/contact/ger.jpg" width="150" height="150"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="/static/contact/fran.png" width="150" height="150"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="/static/contact/juli.png" width="150" height="150">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="/static/contact/bar.png" width="150" height="150"><br><br>   
+            Germán Daniel Hilgert &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Facundo Rogriguez Goren &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Julian Londoño &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Barbara Craig<br>
+            Machine Learning engineer &nbsp;&nbsp; &nbsp;&nbsp; Machine Learning engineer &nbsp;&nbsp; &nbsp;&nbsp; Machine Learning engineer &nbsp;&nbsp; &nbsp;&nbsp; Machine Learning engineer
+            -->
+            
+            <table border="0" style="margin: 0 auto;">
+                <tr align="center">
+                    <td><img src="/static/contact/ger.jpg" width="150" height="150" align="center"></td>
+                    <td><img src="/static/contact/facu.png" width="150" height="150" align="center"></td>
+                    <td><img src="/static/contact/juli.png" width="150" height="150" align="center"></td>
+                    <td><img src="/static/contact/bar.png" width="150" height="150" align="center"></td>
+                </tr>
+                <tr align="center">
+                    <td align="center">Germán Daniel Hilgert</td>
+                    <td align="center">Facundo Rogriguez Goren</td>
+                    <td align="center">Julian Londono</td>
+                    <td align="center">Barbara Craig</td>
+                </tr>
+                <tr align="center">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp; Machine Learning engineer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp; Machine Learning engineer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp; Machine Learning engineer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp; Machine Learning engineer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr align="center">
+                    <td><a title="German Hilgert" href="https://www.linkedin.com/in/german-hilgert/"><img src="/static/contact/linkedin.png" width="20" height="20" align="center"></a></td>
+                    <td><a title="Facundo Rogriguez Goren" href="https://www.linkedin.com/in/frodriguezgoren/"><img src="/static/contact/linkedin.png" width="20" height="20" align="center"></a></td>
+                    <td><a title="Julian Londono" href="https://www.linkedin.com/in/julondonor/"><img src="/static/contact/linkedin.png" width="20" height="20" align="center"></a></td>
+                    <td><a title="Barbara Craig" href="https://www.linkedin.com/in/barbara-craig-39202aa5/"><img src="/static/contact/linkedin.png" width="20" height="20" align="center"></a></td>
+                </tr>
+            </table>    
+
+        </div>
+    </main>
+    <footer id="fixed-height2">
+        <p>Anyone AI Team 7 - All rights reserved © 2022</p>
+    </footer>
+
+</body>
+<script src="{{ url_for('static', path='/JS/main.js') }}"></script> 
+
+</html>
