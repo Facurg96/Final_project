@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ url_for('static', path='./img/favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="http://0.0.0.0/static/./img/favicon.ico" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
     <title>Automated E-commerce classificator</title>
-    <link href="{{ url_for('static', path='css/style.css') }}" rel="stylesheet">
+    <link href="http://0.0.0.0/static/css/style.css" rel="stylesheet">
 </head>
 
-<body> 
+<body>
     <header style="z-index:1 ; opacity: 1; background-color: #182B56;">
         <div class="logo">
-           
-            <img src="{{ url_for('static', path='./img/anyonelogo.svg') }}" alt="" width="160" height="40">
+
+            <img src="http://0.0.0.0/static/./img/anyonelogo.svg" alt="" width="160" height="40">
         </div>
         <div class="titulo">
             <h1 id=title>E-commerce Classificator</h1>
@@ -37,71 +37,71 @@
             </div>
         </div>
 
-        
-        
+
+
     </header>
 
     <main id="fixed-height1" style="height: 1000px">
         <div id="contact2">
-            
-                
-                <p class="text" id="product_title">PRODUCT: {{product.product_name}}</p>
+
+
+                <p class="text" id="product_title">PRODUCT: car</p>
                 <div class="row">
                 <div class="col-4 ">
-                    
-                    <img src="{{image_path}}" width="250" height="250">
-                    
+
+                    <img src="/static/images/Dash Installation Kits.png" width="250" height="250">
+
                 </div>
                 <div class="col-8 ">
                     <div class="alert alert-primary "" role="alert">
-                      <a class="text-dark" id="product_body">Description: {{product.product_description}}</a>
+                      <a class="text-dark" id="product_body">Description: chevrolet truck</a>
                     </div>
                     <div class="alert alert-primary" role="alert">
-                      <a class="text-dark" id="product_body">Price: {{product.price}}</a>
+                      <a class="text-dark" id="product_body">Price: 1000</a>
                     </div>
                     <div class="alert alert-primary" role="alert">
-                      <a class="text-dark" id="product_body">Category: {{prediction}}</a>
+                      <a class="text-dark" id="product_body">Category: Dash Installation Kits</a>
                     </div>
                     <div class="alert alert-primary" role="alert">
-                      <a class="text-dark" id="product_body">Score: {{score}} %</a>
+                      <a class="text-dark" id="product_body">Score: 93.0 %</a>
                     </div>
                     <div class="row">
                     <div class="col-4 ">
                       <form action="/save" method="POST" id="save">
-                          <input name="product_name" style="visibility: hidden;" value="{{product.product_name}}"/>
-                          <input name="product_description" style="visibility: hidden;" value="{{product.product_description}}"/><br>
+                          <input name="product_name" style="visibility: hidden;" value="car"/>
+                          <input name="product_description" style="visibility: hidden;" value="chevrolet truck"/><br>
                           <div class="alert alert-primary" role="alert">
                           <button type="submit" style="background-color:#182b5600; border:none"><img src="/static/contact/save.png" width="40" height="40"></button></div>
-                          <input name="prediction" style="visibility: hidden;" value="{{prediction}}"/>
-                          <input name="price" style="visibility: hidden;" value="{{product.price}}"/>                       
+                          <input name="prediction" style="visibility: hidden;" value="Dash Installation Kits"/>
+                          <input name="price" style="visibility: hidden;" value="1000"/>
                       </form>
                     </div>
                     <div class="col-4 ">
                     <form id="form" autocomplete="off" method="POST" action="/feedback">
-                        <input name="product_name" style="visibility: hidden;" value="{{product.product_name}}"/>
-                        <input name="product_description" style="visibility: hidden;" value="{{product.product_description}}"/><br>
+                        <input name="product_name" style="visibility: hidden;" value="car"/>
+                        <input name="product_description" style="visibility: hidden;" value="chevrolet truck"/><br>
                         <div class="alert alert-primary" role="alert">
                           New Category: <div class="autocomplete" style="width:300px;">
                             <input id="myInput" type="text" name="new_class" placeholder="Type your category"> </div>
-                                       
 
-                          </div> 
-                          </div> 
-                        <div class="col-4 "> 
-                          <input name="prediction" style="visibility: hidden;" value="{{prediction}}"/>
-                          <input name="price" style="visibility: hidden;" value="{{product.price}}"/>
+
+                          </div>
+                          </div>
+                        <div class="col-4 ">
+                          <input name="prediction" style="visibility: hidden;" value="Dash Installation Kits"/>
+                          <input name="price" style="visibility: hidden;" value="1000"/>
                           <div class="alert alert-primary" role="alert">
                           <button type="submit">Report incorrect answer</button><br>
                           </div>
-                          
+
                         </div>
                     </form>
                     </div>
                 </div>
               </div>
 
-        </div>     
-    
+        </div>
+
     </main>
     <footer id="fixed-height2">
         <p>Anyone AI Team 7 - All rights reserved © 2022</p>
@@ -206,7 +206,7 @@
           closeAllLists(e.target);
       });
     }
-    
+
     /*An array containing all the Categories names in the world:*/
 var categories =
 ['Alkaline Batteries', 'Specialty Batteries',
@@ -349,5 +349,5 @@ var categories =
 autocomplete(document.getElementById("myInput"), categories);
 </script>
 
-</body> 
+</body>
 </html>

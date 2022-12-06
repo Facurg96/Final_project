@@ -3,7 +3,7 @@ from unittest import TestCase
 from unittest.mock import patch
 from fastapi.testclient import TestClient
 
-from app import app
+import app
 
 
 client = TestClient(app)
@@ -21,6 +21,18 @@ class TestIntegration(TestCase):
         self.assertEqual(response.status_code, 200)
         response = self.client.post("/")
         self.assertEqual(response.status_code, 302)
+
+    def test_create_item():
+        response = client.post(
+            "/analyze/",
+            json={"product_name": "foobar", "product_description": "Foo Bar", "price": "12"},
+        )
+        assert response.status_code == 200
+        assert response.json() == {
+            "product_name": "foobar",
+            "product_description": "Foo Bar",
+            "price": "12"}
+         
 
 """
     def test_predict_bad_parameters(self):

@@ -42,43 +42,19 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="menu">
-            <div class="dropdown">                
-            <span class="material-icons-round" class="dropbtn" id="menu-icono">menu</span>
-            <span class="material-icons-round">close</span>
-            <div class="dropdown-content">
-                <a href="./index.html">Home</a>
-                <a href="./order.html">Order</a>
-                <a href="./contact-us.html">Contact Us</a>
-                <a href="./log-in.html">Log In</a>
-            </div> -->
+
         </div>
         
         
     </header>
 
     <main id="fixed-height1" >
-        <!--
-        <form class="form" action="/analyze/" method="post" enctype="multipart/form-data">
-            <label for="product_name">Product name:</label><br>
-            <input type="text", name="product_name" cols="50"><br>
-            <label for="product_description">Product description:</label><br>
-            <textarea name="product_description" rows="4" cols="50"></textarea><br>
-            <label for="price">Price:</label><br>
-            <input type="number", name="price" value="0"><br>
-            <label for="product_image">Product image:</label><br>
-            <input type="file", name="product_image" accept="image/jpeg"><br><br>
-            <input type="submit", value="Predict">            
-        </form> -->
 
         
     <div class="container-fluid">
         
         <div class="col-4 offset-md-4">
             <h3>Recent Products</h3>
-            <img class="rounded" src="/static/images/Accessories.png"  alt="first slide">
-            <img class="rounded" src="/static/images/Accessories.png"  alt="first slide">
-            <img class="rounded" src="/static/images/Accessories.png"  alt="first slide">
             <br><br>
             <div class="bd-example">
             <div id="mycarousel" class="carousel slide" data-ride="carousel">
@@ -90,25 +66,25 @@
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     <div class="item">
-                        <img class="rounded" src="/static/images/Accessories.png"  alt="first slide">
+                        <img class="rounded" src="/static/images/{{one[3]}}.png"  alt="first slide">
                         <div class="carousel-caption">    <h4>Product name:{{one[0]}}</h4><h4>Product description:{{one[1]}}</h4><h4>Product price:${{one[2]}}</h4><h4>Category:{{one[3]}}</h4>
                         <p>{{one[2]}}</p>
                         </div>
                     </div>
                     <div class="item ">
-                        <img class="rounded" src="/static/images/Amplifiers.png" alt="second slide">
+                        <img class="rounded" src="/static/images/{{two[3]}}.png" alt="second slide">
                         <div class="carousel-caption"><h4>Product name:{{two[0]}}</h4><h4>Product description:{{two[1]}}</h4><h4>Product price:${{two[2]}}</h4><h4>Category:{{two[3]}}</h4>
                         <p>{{two[2]}}</p>
                         </div>
                     </div>
                     <div class="item">
-                        <img class="rounded" src="/static/images/Accessories.png"  alt="third slide">
+                        <img class="rounded" src="/static/images/{{three[3]}}.png"  alt="third slide">
                         <div class="carousel-caption"><h4>Product name:{{three[0]}}</h4><h4>Product description:{{three[1]}}</h4><h4>Product price:${{three[2]}}</h4><h4>Category:{{three[3]}}</h4>
                         <p>{{three[2]}}</p>
                         </div>
                     </div>
                     <div class="item ">
-                        <img class="rounded" src="/static/images/Accessories.png"  alt="fourth slide">
+                        <img class="rounded" src="/static/images/{{four[3]}}.png"  alt="fourth slide">
                         <div class="carousel-caption"><h4>Product name:{{four[0]}}</h4><h4>Product description:{{four[1]}}</h4><h4>Product price:${{four[2]}}</h4><h4>Category:{{four[3]}}</h4>
                         <p>{{four[2]}}</p>
                         </div>

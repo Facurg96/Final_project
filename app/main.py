@@ -15,7 +15,7 @@ import settings
 
 app = FastAPI()
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="./templates")
 
 app.mount(
     "/static", StaticFiles(directory="./static"), name="static")
@@ -51,7 +51,7 @@ async def create_item(request: Request, form_data: ProductInfo = Depends(Product
     print(prediction)
     filename=str(prediction[0])+'.png'
     image_path = os.path.join("/static/images/",filename)
-    return templates.TemplateResponse("response.html", {"request": request, "product": form_data, "prediction": prediction[0], "image_path": image_path, "score":prediction[1]})  
+    return templates.TemplateResponse("response.html", {"request": request, "product": form_data, "prediction": prediction[0], "image_path": image_path, "score":(round(prediction[1],2)*100)}), form_data  
 
 @app.post("/api/analyze/")
 async def create_item(request: Request, form_data: ProductInfo = Depends(ProductInfo.as_form)):
