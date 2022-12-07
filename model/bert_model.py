@@ -35,6 +35,7 @@ add = "/".join(cwd.split("/")[:-1])
 sys.path.append(add)
 
 from text_normalizer import normalize_corpus
+#from model.text_normalizer import normalize_corpus TO RUN FROM Notebooks folder
 from sklearn.feature_extraction.text import TfidfVectorizer
 import gensim
 from gensim.models import Word2Vec
@@ -51,58 +52,6 @@ import os
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 
-# Required classes:
-class DropColumns(TransformerMixin):
-    """This Transformer, receives a list of column names
-    as a parameter, which are the columns to be dropped."""
-    def __init__(self, cols_to_drop):
-        self.cols_to_drop = cols_to_drop
-    def transform(self, X):
-        return X.drop(self.cols_to_drop, axis=1)
-
-    def fit(self, X, y=None):
-        return self
-
-class ColumnExtractor(TransformerMixin):
-    def __init__(self, columns):
-        self.columns = columns
-    def transform(self, X):
-        return X[self.columns]
-
-    def fit(self, X, y=None):
-        return self
-class MyOneHotEncoding(TransformerMixin):
-    def transform(self, X):
-        return pd.DataFrame(self.ohe.transform(X), columns = self.ohe_categories)
-
-    def fit(self, X, y=None):
-        self.ohe = OneHotEncoder(sparse=False).fit(X)
-        self.ohe_categories = self.ohe.categories_
-        return self 
-        
-class NameDescriptionImputation(TransformerMixin):
-    #def __init__(self, to_keep):
-    #    self.to_keep = to_keep
-    def transform(self, X):
-        X["name"] = X["name"].fillna(X["description"])
-        X["name"] = X["name"].fillna("UNK")
-        X["description"] = X["description"].fillna(X["name"])
-        X["description"] = X["description"].fillna("UNK")
-        return X
-
-    def fit(self, X_param, y=None):
-        return self
-
-class NameDescriptionNormalization(TransformerMixin):
-    def transform(self, X):
-        new_df = pd.DataFrame({"name":normalize_corpus(list(X["name"])),
-                                 "description":normalize_corpus(list(X["description"]))
-                                })
-        return new_df
-
-    def fit(self, X, y=None):
-        return self
-        
 class BertPredict():
     NUM_LABELS = 263
     MODEL_NAME = 'distilbert-base-uncased'
@@ -169,8 +118,87 @@ class BertPredict():
 
         return predict_proba
 
-"""
+    @staticmethod
+    def get_labels(route):
+        labels = pickle.load(open(route,"rb"))
+        return labels
+    
 
-if __name__=='__main__':
-    with open(preprocessing, 'rb') as f:
-        self.preprocessing = pickle.load(f)"""
+
+# Required classes:
+class DropColumns(TransformerMixin):
+    """This Transformer, receives a list of column names
+    as a parameter, which are the columns to be dropped."""
+    def __init__(self, cols_to_drop):
+        self.cols_to_drop = cols_to_drop
+    def transform(self, X):
+        return X.drop(self.cols_to_drop, axis=1)
+
+    def fit(self, X, y=None):
+        return self
+
+class ColumnExtractor(TransformerMixin):
+    def __init__(self, columns):
+        self.columns = columns
+    def transform(self, X):
+        return X[self.columns]
+
+    def fit(self, X, y=None):
+        return self
+class MyOneHotEncoding(TransformerMixin):
+    def transform(self, X):
+        return pd.DataFrame(self.ohe.transform(X), columns = self.ohe_categories)
+
+    def fit(self, X, y=None):
+        self.ohe = OneHotEncoder(sparse=False).fit(X)
+        self.ohe_categories = self.ohe.categories_
+        return self 
+        
+class NameDescriptionImputation(TransformerMixin):
+    #def __init__(self, to_keep):
+    #    self.to_keep = to_keep
+    def transform(self, X):
+        X["name"] = X["name"].fillna(X["description"])
+        X["name"] = X["name"].fillna("UNK")
+        X["description"] = X["description"].fillna(X["name"])
+        X["description"] = X["description"].fillna("UNK")
+        return X
+
+    def fit(self, X_param, y=None):
+        return self
+
+class NameDescriptionNormalization(TransformerMixin):
+    def transform(self, X):
+        new_df = pd.DataFrame({"name":normalize_corpus(list(X["name"])),
+                                 "description":normalize_corpus(list(X["description"]))
+                                })
+        return new_df
+
+    def fit(self, X, y=None):
+        return self
+
+
+class ReduceCats(TransformerMixin):
+    def __init__(self, threshold):
+        self.threshold = threshold
+
+    def fit(self, y, X=None):
+        counts = y.value_counts()
+        self.new_cats = set(counts[counts>self.threshold].index)
+        return self
+
+    def transform(self, y):
+        def modify_cats(category):
+            if category not in self.new_cats:
+                return "other"
+            else:
+                return category
+        y = y.apply(modify_cats)
+        return y
+class LabelEncoderTransformer(TransformerMixin):
+    def fit(self, y, X=None):
+        self.enc = LabelEncoder().fit(y)
+        self.classes_ = self.enc.classes_
+        return self
+    def transform(self, y):
+        return self.enc.transform(y)

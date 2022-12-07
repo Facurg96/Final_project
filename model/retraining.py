@@ -103,6 +103,8 @@ history = modelito.fit(tfdataset, batch_size=BATCH_SIZE, epochs = 1)
 
 #SAVE_NEW = "./experiments/trained_models/bert_tuned_2"
 try:
+    print("Saving the new model in: ", SAVE_ROUTE)
     modelito.save_pretrained(SAVE_ROUTE)
+    print("Successfully saved!!!")
 except:
     print("Invalid file path for saving the new model...")
