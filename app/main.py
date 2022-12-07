@@ -12,6 +12,7 @@ from middleware import model_predict
 from schemas import ProductInfo
 from starlette.responses import HTMLResponse
 import settings
+import urllib.parse
 
 app = FastAPI()
 
@@ -30,10 +31,14 @@ def index(request: Request):
     count = my_products.count()[0]
 
     one = my_products.iloc[count - 1]
+    onee=urllib.parse.quote(one[3])
     two = my_products.iloc[count - 2]
+    twoo=urllib.parse.quote(two[3])
     three = my_products.iloc[count - 3]
+    threee=urllib.parse.quote(three[3])
     four = my_products.iloc[count - 4]
-    return templates.TemplateResponse("index.html", {"request": request, "count": count, "one": one, "two": two, "three": three, "four": four})
+    fourr=urllib.parse.quote(four[3])
+    return templates.TemplateResponse("index.html", {"request": request, "count": count, "one": one, "two": two, "three": three, "four": four, "onee":onee,"twoo":twoo,"threee":threee,"fourr":fourr})
 
 def get_form(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
@@ -51,7 +56,7 @@ async def create_item(request: Request, form_data: ProductInfo = Depends(Product
     print(prediction)
     filename=str(prediction[0])+'.png'
     image_path = os.path.join("/static/images/",filename)
-    return templates.TemplateResponse("response.html", {"request": request, "product": form_data, "prediction": prediction[0], "image_path": image_path, "score":(round(prediction[1],2)*100)}), form_data  
+    return templates.TemplateResponse("response.html", {"request": request, "product": form_data, "prediction": prediction[0], "image_path": image_path, "score":(round(prediction[1],2)*100)})
 
 @app.post("/api/analyze/")
 async def create_item(request: Request, form_data: ProductInfo = Depends(ProductInfo.as_form)):
