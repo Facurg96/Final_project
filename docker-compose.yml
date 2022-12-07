@@ -30,3 +30,4 @@ services:
       - redis
     volumes:
       - ./uploads:/src/uploads
+      - ./feedback:/src/feedback
