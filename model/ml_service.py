@@ -24,13 +24,12 @@ db = redis.Redis(
 
 def predict(query_dict):
     """
-    Load image from the corresponding folder based on the image name
-    received, then, run our ML model to get predictions.
+    Load dict with the name and description to be classified,
+     then, run our ML model to get predictions.
 
     Parameters
     ----------
-    image_name : str
-        Image filename.
+    query_dict : str
 
     Returns
     -------
@@ -55,24 +54,10 @@ def classify_process():
     the original job ID so other services can see it was processed and access
     the results.
 
-    Load image from the corresponding folder based on the image name
-    received, then, run our ML model to get predictions.
+    Decode the dict received, then, run our ML model to get predictions.
     """
     while True:
-        # Inside this loop you should add the code to:
-        #   1. Take a new job from Redis
-        #   2. Run your ML model on the given data
-        #   3. Store model prediction in a dict with the following shape:
-        #      {
-        #         "prediction": str,
-        #         "score": float,
-        #      }
-        #   4. Store the results on Redis using the original job ID as the key
-        #      so the API can match the results it gets to the original job
-        #      sent
-        # Hint: You should be able to successfully implement the communication
-        #       code with Redis making use of functions `brpop()` and `set()`.
-        # TODO
+        
         # 1. Taking a new job from Redis
         queue_name, msg = db.brpop(settings.REDIS_QUEUE)
         msg = json.loads(msg) #converts the json object to a python dictionary
@@ -90,7 +75,7 @@ def classify_process():
 
         # 4. Storing the results on Redis Hash Table:
         db.set(job_id, json.dumps(results))
-        # Don't forget to sleep for a bit at the end
+        
         time.sleep(settings.SERVER_SLEEP)
 
 

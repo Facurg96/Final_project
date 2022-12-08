@@ -131,6 +131,10 @@ async def create_item(request: Request):
             outfile.write(prediction)
             outfile.write("\n")
     return templates.TemplateResponse("thanks.html",{"request": request}) 
+@app.get("/categories/", response_class=HTMLResponse)
+async def read_item(request: Request):
+    return templates.TemplateResponse("categories.html",{"request": request})
+
 
 if __name__ =="__main__":
     uvicorn.run("main:app", host = "0.0.0.0", port=5000, reload=True)
