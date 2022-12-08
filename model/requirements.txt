@@ -18,4 +18,4 @@ plotly_express==0.4.0
 protobuf==3.20.*
 
 transformers
-tensorflow==2.8.0
+tensorflow-cpu==2.8.0

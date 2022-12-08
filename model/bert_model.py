@@ -1,8 +1,6 @@
 import json
 import yaml
-
 import pickle
-
 
 # Standard Imports
 import pandas as pd
@@ -25,7 +23,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 
-#liraries for NLP
+#libraries for NLP
 import os
 import sys
 # I had some issues importing files
@@ -35,6 +33,7 @@ add = "/".join(cwd.split("/")[:-1])
 sys.path.append(add)
 
 from text_normalizer import normalize_corpus
+#from model.text_normalizer import normalize_corpus TO RUN FROM Notebooks folder
 from sklearn.feature_extraction.text import TfidfVectorizer
 import gensim
 from gensim.models import Word2Vec
@@ -50,6 +49,90 @@ import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
+
+class BertPredict():
+    # First we initialize some attributes used in the methods:
+    NUM_LABELS = 263
+    MODEL_NAME = 'distilbert-base-uncased'
+    MAX_LEN = 20
+    BATCH_SIZE = 8
+
+    def __init__(self, preprocessing:str, categories:str, model:str):
+        """
+        preprocessing : is a string with the file path of the pickle-compressed pipeline for preprocessing.
+        categories: is a file path of a json containing the categories and their encodings.
+        model: is a path for the folder of the pretrained distilbert model.
+        """
+        self.preprocessing = pickle.load(open(preprocessing,"rb"))
+        self.model = TFDistilBertForSequenceClassification.from_pretrained(model)
+        with open(categories, 'r') as j:
+            self.categories = json.loads(j.read())
+        self.predictor = BertPredict.create_predictor(model = self.model,model_name= BertPredict.MODEL_NAME,max_len= BertPredict.MAX_LEN)
+    
+    def __call__(self, name, description, types=None, price=None):
+        # Here we must pre process the query given in the parameters
+        # and transform it into a pandas dataframe:
+        types = np.nan if types==None else types
+        price = np.nan if price==None else price
+
+        sku = np.nan; upc = np.nan; shipping = np.nan;
+        manufacturer= np.nan; model = np.nan; url = np.nan; image = np.nan
+        x_test = pd.DataFrame({
+            "sku":pd.Series([sku],dtype="float"),
+            "name":pd.Series([name],dtype="str"),
+            "type":pd.Series([types],dtype="str"),
+            "price":pd.Series([price],dtype="float"),
+            "upc":pd.Series([upc],dtype="float"),
+            "shipping":pd.Series([shipping],dtype="float"),
+            "description":pd.Series([description], dtype="str"),
+            "manufacturer":pd.Series([manufacturer], dtype="str"),
+            "model":pd.Series([model], dtype="str"),
+            "url":pd.Series([url],dtype="str"),
+            "image":pd.Series([image], dtype="str")
+        })
+        x_test_transformed = self.preprocessing.transform(x_test)["description"]
+        preds = self.predictor(x_test_transformed) 
+
+        preds = list(map(lambda x: (self.categories[str(x[0])]["name"], x[1]), preds))
+        #return (name_pred, prob)
+        return preds[0]
+
+    @staticmethod
+    def construct_encodings(x, tkzr, max_len, trucation=True, padding=True):
+        return tkzr(x, max_length=max_len, truncation=trucation, padding=padding)
+
+    @staticmethod
+    def construct_tfdataset(encodings, y=None):
+        if y:
+            return tf.data.Dataset.from_tensor_slices((dict(encodings),y))
+        else:
+            # this case is used when making predictions on unseen samples after training
+            return tf.data.Dataset.from_tensor_slices(dict(encodings))
+
+    @staticmethod
+    def create_predictor(model, model_name, max_len):
+        # Here the tokenizer is initialized:
+        tkzr = DistilBertTokenizer.from_pretrained(model_name)
+        def predict_proba(X_test):
+            # We construct the encodings, the tfdataset and make the prediction from the X_Test:
+            x = X_test.to_list()
+
+            encodings = BertPredict.construct_encodings(x, tkzr, max_len=max_len)
+            tfdataset = BertPredict.construct_tfdataset(encodings)
+            tfdataset = tfdataset.batch(BertPredict.BATCH_SIZE)
+
+            preds = model.predict(tfdataset).logits
+            preds_2 = activations.softmax(tf.convert_to_tensor(preds)).numpy()
+            return list(map(lambda x: (np.argmax(x), np.max(preds_2)), preds))
+
+        return predict_proba
+
+    @staticmethod
+    def get_labels(route):
+        labels = pickle.load(open(route,"rb"))
+        return labels
+    
+
 
 # Required classes:
 class DropColumns(TransformerMixin):
@@ -102,75 +185,29 @@ class NameDescriptionNormalization(TransformerMixin):
 
     def fit(self, X, y=None):
         return self
-        
-class BertPredict():
-    NUM_LABELS = 263
-    MODEL_NAME = 'distilbert-base-uncased'
-    MAX_LEN = 20
-    BATCH_SIZE = 8
-    def __init__(self, preprocessing:str, categories:str, model:str):
-        self.preprocessing = pickle.load(open(preprocessing,"rb"))
-        self.model = TFDistilBertForSequenceClassification.from_pretrained(model)
-        with open(categories, 'r') as j:
-            self.categories = json.loads(j.read())
-        self.predictor = BertPredict.create_predictor(model = self.model,model_name= BertPredict.MODEL_NAME,max_len= BertPredict.MAX_LEN)
-    def __call__(self, name, description, types=None, price=None):
-        types = np.nan if types==None else types
-        price = np.nan if price==None else price
 
-        sku = np.nan; upc = np.nan; shipping = np.nan;
-        manufacturer= np.nan; model = np.nan; url = np.nan; image = np.nan
-        x_test = pd.DataFrame({
-            "sku":pd.Series([sku],dtype="float"),
-            "name":pd.Series([name],dtype="str"),
-            "type":pd.Series([types],dtype="str"),
-            "price":pd.Series([price],dtype="float"),
-            "upc":pd.Series([upc],dtype="float"),
-            "shipping":pd.Series([shipping],dtype="float"),
-            "description":pd.Series([description], dtype="str"),
-            "manufacturer":pd.Series([manufacturer], dtype="str"),
-            "model":pd.Series([model], dtype="str"),
-            "url":pd.Series([url],dtype="str"),
-            "image":pd.Series([image], dtype="str")
-        })
-        x_test_transformed = self.preprocessing.transform(x_test)["description"]
-        preds = self.predictor(x_test_transformed) 
-        #name_pred = self.categories[str(pred[0])]["name"]
-        #prob = self.model.predict_proba(x_test_transformed)[0][pred[0]]
-        preds = list(map(lambda x: (self.categories[str(x[0])]["name"], x[1]), preds))
-        #return (name_pred, prob)
-        return preds[0]
 
-    @staticmethod
-    def construct_encodings(x, tkzr, max_len, trucation=True, padding=True):
-        return tkzr(x, max_length=max_len, truncation=trucation, padding=padding)
+class ReduceCats(TransformerMixin):
+    def __init__(self, threshold):
+        self.threshold = threshold
 
-    @staticmethod
-    def construct_tfdataset(encodings, y=None):
-        if y:
-            return tf.data.Dataset.from_tensor_slices((dict(encodings),y))
-        else:
-            # this case is used when making predictions on unseen samples after training
-            return tf.data.Dataset.from_tensor_slices(dict(encodings))
+    def fit(self, y, X=None):
+        counts = y.value_counts()
+        self.new_cats = set(counts[counts>self.threshold].index)
+        return self
 
-    @staticmethod
-    def create_predictor(model, model_name, max_len):
-        tkzr = DistilBertTokenizer.from_pretrained(model_name)
-        def predict_proba(X_test):
-            x = X_test.to_list()
-
-            encodings = BertPredict.construct_encodings(x, tkzr, max_len=max_len)
-            tfdataset = BertPredict.construct_tfdataset(encodings)
-            tfdataset = tfdataset.batch(BertPredict.BATCH_SIZE)
-
-            preds = model.predict(tfdataset).logits
-            preds_2 = activations.softmax(tf.convert_to_tensor(preds)).numpy()
-            return list(map(lambda x: (np.argmax(x), np.max(preds_2)), preds))
-
-        return predict_proba
-
-"""
-
-if __name__=='__main__':
-    with open(preprocessing, 'rb') as f:
-        self.preprocessing = pickle.load(f)"""
+    def transform(self, y):
+        def modify_cats(category):
+            if category not in self.new_cats:
+                return "other"
+            else:
+                return category
+        y = y.apply(modify_cats)
+        return y
+class LabelEncoderTransformer(TransformerMixin):
+    def fit(self, y, X=None):
+        self.enc = LabelEncoder().fit(y)
+        self.classes_ = self.enc.classes_
+        return self
+    def transform(self, y):
+        return self.enc.transform(y)

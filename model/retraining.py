@@ -54,6 +54,8 @@ from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, Early
 from bert_model import *
 import sys
 
+
+# Here are some constants used for creating and training the model:
 SAVE_ROUTE = sys.argv[1]
 
 NUM_LABELS = 263
@@ -64,11 +66,14 @@ BATCH_SIZE = 8
 modelo = "./experiments/trained_models/bert_tuned"
 modelito = TFDistilBertForSequenceClassification.from_pretrained(modelo)
 
+# Setting up some parameters for compiling the model:
 optimizer = optimizers.Adam(learning_rate=3e-5)
 loss = losses.SparseCategoricalCrossentropy(from_logits=True)
 modelito.compile(optimizer=optimizer, loss=loss, 
                metrics=['accuracy'],)
 
+
+# Making only the classifying layer as trainable
 for layer in modelito.layers[:2]:
      layer.trainable = False
 
@@ -80,7 +85,7 @@ PREPROCESSING = "./experiments/preprocessing/text_pipeline.sav"
 CATEGORIES = "./experiments/categories_encoded.json"
 LABELS = "./experiments/preprocessing/label_pipeline.sav"
 
-
+# Reading the feedback csv, loading the preprocessing pipeline and so on:
 fd = pd.read_csv(FEEDBACK_CSV)
 preprocessing = pickle.load(open(PREPROCESSING,"rb"))
 labels = BertPredict.get_labels(LABELS)
@@ -101,8 +106,10 @@ tfdataset = tfdataset.batch(BertPredict.BATCH_SIZE)
 
 history = modelito.fit(tfdataset, batch_size=BATCH_SIZE, epochs = 1)
 
-#SAVE_NEW = "./experiments/trained_models/bert_tuned_2"
+#Saving the new model:
 try:
+    print("Saving the new model in: ", SAVE_ROUTE)
     modelito.save_pretrained(SAVE_ROUTE)
+    print("Successfully saved!!!")
 except:
     print("Invalid file path for saving the new model...")
