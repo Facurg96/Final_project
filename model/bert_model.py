@@ -1,8 +1,6 @@
 import json
 import yaml
-
 import pickle
-
 
 # Standard Imports
 import pandas as pd
@@ -25,7 +23,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 
-#liraries for NLP
+#libraries for NLP
 import os
 import sys
 # I had some issues importing files
@@ -53,17 +51,27 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 
 class BertPredict():
+    # First we initialize some attributes used in the methods:
     NUM_LABELS = 263
     MODEL_NAME = 'distilbert-base-uncased'
     MAX_LEN = 20
     BATCH_SIZE = 8
+
     def __init__(self, preprocessing:str, categories:str, model:str):
+        """
+        preprocessing : is a string with the file path of the pickle-compressed pipeline for preprocessing.
+        categories: is a file path of a json containing the categories and their encodings.
+        model: is a path for the folder of the pretrained distilbert model.
+        """
         self.preprocessing = pickle.load(open(preprocessing,"rb"))
         self.model = TFDistilBertForSequenceClassification.from_pretrained(model)
         with open(categories, 'r') as j:
             self.categories = json.loads(j.read())
         self.predictor = BertPredict.create_predictor(model = self.model,model_name= BertPredict.MODEL_NAME,max_len= BertPredict.MAX_LEN)
+    
     def __call__(self, name, description, types=None, price=None):
+        # Here we must pre process the query given in the parameters
+        # and transform it into a pandas dataframe:
         types = np.nan if types==None else types
         price = np.nan if price==None else price
 
@@ -84,8 +92,7 @@ class BertPredict():
         })
         x_test_transformed = self.preprocessing.transform(x_test)["description"]
         preds = self.predictor(x_test_transformed) 
-        #name_pred = self.categories[str(pred[0])]["name"]
-        #prob = self.model.predict_proba(x_test_transformed)[0][pred[0]]
+
         preds = list(map(lambda x: (self.categories[str(x[0])]["name"], x[1]), preds))
         #return (name_pred, prob)
         return preds[0]
@@ -104,8 +111,10 @@ class BertPredict():
 
     @staticmethod
     def create_predictor(model, model_name, max_len):
+        # Here the tokenizer is initialized:
         tkzr = DistilBertTokenizer.from_pretrained(model_name)
         def predict_proba(X_test):
+            # We construct the encodings, the tfdataset and make the prediction from the X_Test:
             x = X_test.to_list()
 
             encodings = BertPredict.construct_encodings(x, tkzr, max_len=max_len)
